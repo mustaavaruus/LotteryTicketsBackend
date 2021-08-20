@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "PB+kbLHMbjoF5qEs+Ddigo4NGr6/IQEBnxalZ6cJilR+WoCMf7GsBlPelrFBrOX0qd7g/52brxLo9kwl5dCXEw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\PC6\\source\\repos\\LotteryTicketsV1\\LotteryTicketsV1\\LotteryTicketsV1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\PC6\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.18\\microsoft.netcore.app.host.win-x64.3.1.18.nupkg.sha512"
+  ],
+  "logs": []
+}
