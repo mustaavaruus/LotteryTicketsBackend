@@ -57,8 +57,7 @@ namespace LotteryTicketsV1.Controllers
         {
             try
             {
-                //throw new Exception("not implemented yet");
-                TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
+
 
                 return Ok(this.ticketProcessing.get());
             }
