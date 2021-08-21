@@ -19,3 +19,6 @@ C:\Users\PC6\source\repos\LotteryTicketsV1\LotteryTicketsV1\obj\Debug\netcoreapp
 C:\Users\PC6\source\repos\LotteryTicketsV1\LotteryTicketsV1\obj\Debug\netcoreapp3.1\LotteryTicketsV1.dll
 C:\Users\PC6\source\repos\LotteryTicketsV1\LotteryTicketsV1\obj\Debug\netcoreapp3.1\LotteryTicketsV1.pdb
 C:\Users\PC6\source\repos\LotteryTicketsV1\LotteryTicketsV1\obj\Debug\netcoreapp3.1\LotteryTicketsV1.genruntimeconfig.cache
+C:\Users\PC6\source\repos\LotteryTicketsV1\LotteryTicketsV1\bin\Debug\netcoreapp3.1\Mapster.dll
+C:\Users\PC6\source\repos\LotteryTicketsV1\LotteryTicketsV1\bin\Debug\netcoreapp3.1\Mapster.Core.dll
+C:\Users\PC6\source\repos\LotteryTicketsV1\LotteryTicketsV1\obj\Debug\netcoreapp3.1\LotteryTicketsV1.csproj.CopyComplete

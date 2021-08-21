@@ -1,4 +1,5 @@
-﻿using LotteryTicketsV1.DTO;
+﻿using LotteryTicketsV1.BLL;
+using LotteryTicketsV1.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,12 @@ namespace LotteryTicketsV1.Controllers
     [Route("api/[controller]")]
     public class TicketController : ControllerBase
     {
+
+        private TicketProcessing ticketProcessing;
+
         public  TicketController() 
         {
-
+            this.ticketProcessing = new TicketProcessing();
 
         }
 
@@ -23,9 +27,8 @@ namespace LotteryTicketsV1.Controllers
             try
             {
                 //throw new Exception("not implemented yet");
-                TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
 
-                return Ok(ticketResponseDTO);
+                return Ok(this.ticketProcessing.add(ticketDTO));
             } 
             catch (Exception e)
             {
@@ -40,9 +43,8 @@ namespace LotteryTicketsV1.Controllers
             try
             {
                 //throw new Exception("not implemented yet");
-                TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
 
-                return Ok(ticketResponseDTO);
+                return Ok(this.ticketProcessing.update(ticketDTO));
             }
             catch (Exception e)
             {
@@ -58,7 +60,7 @@ namespace LotteryTicketsV1.Controllers
                 //throw new Exception("not implemented yet");
                 TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
 
-                return Ok(ticketResponseDTO);
+                return Ok(this.ticketProcessing.get());
             }
             catch (Exception e)
             {
@@ -67,7 +69,7 @@ namespace LotteryTicketsV1.Controllers
         }
 
         [HttpGet("get/{number}")]
-        public IActionResult getByNumber(int number)
+        public IActionResult getByNumber(Guid number)
         {
             try
             {
@@ -82,15 +84,15 @@ namespace LotteryTicketsV1.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
-        public IActionResult delete(int id)
+        [HttpDelete("delete/{number}")]
+        public IActionResult delete(Guid number)
         {
             try
             {
                 //throw new Exception("not implemented yet");
                 TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
 
-                return Ok(ticketResponseDTO);
+                return Ok(this.ticketProcessing.delete(number));
             }
             catch (Exception e)
             {

@@ -8,7 +8,7 @@ namespace LotteryTicketsV1.DTO
     public class TicketDTO
     {
         public int id { get; set; }
-        public int number { get; set; }
+        public Guid number { get; set; }
         public int circulation { get; set; }
         public int choosedNumbersCount { get; set; }
         public List<int> choosedNumbers { get; set; }
@@ -22,7 +22,7 @@ namespace LotteryTicketsV1.DTO
 
     public class TicketAddReceiveDTO
     {
-        public int number { get; set; }
+        public Guid number { get; set; }
         public int circulation { get; set; }
         public int choosedNumbersCount { get; set; }
         public List<int> choosedNumbers { get; set; }
@@ -37,7 +37,7 @@ namespace LotteryTicketsV1.DTO
     public class TicketReceiveDTO
     {
         public int id { get; set; }
-        public int number { get; set; }
+        public Guid number { get; set; }
         public int circulation { get; set; }
         public int choosedNumbersCount { get; set; }
         public List<int> choosedNumbers { get; set; }
@@ -52,7 +52,7 @@ namespace LotteryTicketsV1.DTO
     public class TicketResponseDTO
     {
         public int id { get; set; }
-        public int number { get; set; }
+        public Guid number { get; set; }
         public int circulation { get; set; }
         public int choosedNumbersCount { get; set; }
         public List<int> choosedNumbers { get; set; }
