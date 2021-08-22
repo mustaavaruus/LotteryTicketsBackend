@@ -42,7 +42,6 @@ namespace LotteryTicketsV1.BLL
                 errText.Append("; ");
                 errText.Append(MAX_CIRCULATION_NUMBER);
                 errText.Append(")");
-
                 throw new AddException(errText.ToString());
             }
 
@@ -144,6 +143,7 @@ namespace LotteryTicketsV1.BLL
 
         public TicketResponseDTO add(TicketAddReceiveDTO ticketDTO)
         {
+            
             this.checkValidForAdd(ticketDTO);
 
             ticketDTO.number = Guid.NewGuid();
@@ -154,9 +154,33 @@ namespace LotteryTicketsV1.BLL
 
             //Put to DB
 
-            string sqlString = this.getAddMySQLString(ticket);
+            //string sqlString = this.getAddMySQLString(ticket);
 
-            this.store.execute(sqlString);
+            //this.store.execute(sqlString);
+
+            List<ProcedureParameter> parameters = new List<ProcedureParameter>();
+            ProcedureParameter param = new ProcedureParameter();
+
+            param.key = "pNumber";
+            param.value = ticket.number.ToString();
+            parameters.Add(param);
+
+            param = new ProcedureParameter();
+            param.key = "pCirculation";
+            param.value = ticket.circulation.ToString();
+            parameters.Add(param);
+
+            param = new ProcedureParameter();
+            param.key = "pChoosedCount";
+            param.value = ticket.choosedNumbersCount.ToString();
+            parameters.Add(param);
+
+            param = new ProcedureParameter();
+            param.key = "pSelectedNumbers";
+            param.value = string.Join(" ", ticket.choosedNumbers);
+            parameters.Add(param);
+
+            this.store.executeSP("add_ticket", parameters);
 
             //Get from DB
 
@@ -164,6 +188,7 @@ namespace LotteryTicketsV1.BLL
 
             TicketResponseDTO ticketResponseDTO = ticket.Adapt<TicketResponseDTO>();
 
+            
             return ticketResponseDTO;
         }
 
@@ -259,33 +284,6 @@ namespace LotteryTicketsV1.BLL
 
         }
 
-        private string getUpdateMySQLString(Ticket ticket)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            //"INSERT INTO lotteryticketsdb.tickets(number, circulation, choosed) VALUES ('b7f009b4-0281-11ec-9a03-0242ac130003', 1 , 2)"
-            stringBuilder.Append("UPDATE ");
-            stringBuilder.Append("lotteryticketsdb.tickets ");
-            stringBuilder.Append("SET ");
-            stringBuilder.Append("circulation = ");
-            stringBuilder.Append("'");
-            stringBuilder.Append(ticket.circulation);
-            stringBuilder.Append("'");
-            stringBuilder.Append(",");
-            stringBuilder.Append("choosed = ");
-            stringBuilder.Append("'");
-            stringBuilder.Append(ticket.choosedNumbersCount);
-            stringBuilder.Append("' ");
-            stringBuilder.Append("WHERE ");
-            stringBuilder.Append("number = ");
-            stringBuilder.Append("'");
-            stringBuilder.Append(ticket.number);
-            stringBuilder.Append("'");
-
-            Debug.WriteLine(stringBuilder.ToString());
-
-            return stringBuilder.ToString();
-        }
-
         public TicketResponseDTO update(TicketReceiveDTO ticketDTO)
         {
             this.checkValidForUpdate(ticketDTO);
@@ -294,10 +292,33 @@ namespace LotteryTicketsV1.BLL
 
             this.store.connect();
 
+            //this.store.execute(sqlString);
 
-            string sqlString = this.getUpdateMySQLString(ticket);
+            List<ProcedureParameter> parameters = new List<ProcedureParameter>();
+            ProcedureParameter param;
 
-            this.store.execute(sqlString);
+
+            param = new ProcedureParameter();
+            param.key = "pNumber";
+            param.value = ticket.number.ToString();
+            parameters.Add(param);
+
+            param = new ProcedureParameter();
+            param.key = "pCirculation";
+            param.value = ticket.circulation.ToString();
+            parameters.Add(param);
+
+            param = new ProcedureParameter();
+            param.key = "pChoosedCount";
+            param.value = ticket.choosedNumbersCount.ToString();
+            parameters.Add(param);
+
+            param = new ProcedureParameter();
+            param.key = "pSelectedNumbers";
+            param.value = string.Join(" ", ticket.choosedNumbers);
+            parameters.Add(param);
+
+            this.store.executeSP("edit_ticket", parameters);
 
             this.store.disconnect();
 
@@ -317,16 +338,33 @@ namespace LotteryTicketsV1.BLL
             Ticket ticket = new Ticket();
 
             this.store.connect();
-            var reader = this.store.getDataReader("");
+            var reader = this.store.getDataReader("get_all_tickets");
 
             while (reader.Read())
             {
                 ticket = new Ticket();
 
                 ticket.id = Int32.Parse(reader.GetString("id"));
+
                 ticket.number = Guid.Parse(reader.GetString("number"));
                 ticket.circulation = Int32.Parse(reader.GetString("circulation"));
-                ticket.choosedNumbersCount = Int32.Parse(reader.GetString("choosed"));
+                ticket.choosedNumbersCount = Int32.Parse(reader.GetString("choosedCount"));
+
+                var selectedNumbers = reader.GetString("selectedNumbers").Split(" ");
+
+                ticket.choosedNumbers = new List<int>();
+                for (var i = 0; i < selectedNumbers.Length; i++)
+                {
+                    Debug.WriteLine("&&&" + selectedNumbers[i]);
+
+                    var num = selectedNumbers[i];
+                    if ((num != null))
+                    {
+                        ticket.choosedNumbers.Add(Int16.Parse(num));
+                    }
+
+                    ticket.choosedNumbers.Sort();
+                }
 
                 tickets.Add(ticket);
 
@@ -344,33 +382,21 @@ namespace LotteryTicketsV1.BLL
 
         #region delete methods
 
-
-        private string getDeleteMySQLString(Guid number)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            //"INSERT INTO lotteryticketsdb.tickets(number, circulation, choosed) VALUES ('b7f009b4-0281-11ec-9a03-0242ac130003', 1 , 2)"
-            stringBuilder.Append("DELETE FROM ");
-            stringBuilder.Append("lotteryticketsdb.tickets ");
-            stringBuilder.Append("WHERE ");
-            stringBuilder.Append("number = ");
-            stringBuilder.Append("'");
-            stringBuilder.Append(number);
-            stringBuilder.Append("'");
-
-            Debug.WriteLine(stringBuilder.ToString());
-
-            return stringBuilder.ToString();
-        }
-
         public TicketResponseDTO delete(Guid number)
         {
             Ticket ticket = new Ticket();
-
             this.store.connect();
 
-            string sqlString = this.getDeleteMySQLString(number);
 
-            this.store.execute(sqlString);
+            List<ProcedureParameter> parameters = new List<ProcedureParameter>();
+            ProcedureParameter param;
+
+            param = new ProcedureParameter();
+            param.key = "pNumber";
+            param.value = number.ToString();
+            parameters.Add(param);
+
+            this.store.executeSP("delete_ticket", parameters);
 
             this.store.disconnect();
 

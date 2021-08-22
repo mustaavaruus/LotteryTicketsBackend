@@ -3,6 +3,7 @@ using LotteryTicketsV1.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,6 +25,7 @@ namespace LotteryTicketsV1.Controllers
         [HttpPut("add/")]
         public IActionResult add(TicketAddReceiveDTO ticketDTO)
         {
+            
             try
             {
                 //throw new Exception("not implemented yet");
@@ -55,6 +57,7 @@ namespace LotteryTicketsV1.Controllers
         [HttpGet("get/")]
         public IActionResult get()
         {
+            Debug.WriteLine("_____________________________");
             try
             {
 
