@@ -177,6 +177,7 @@ namespace LotteryTicketsV1.BLL
 
             param = new ProcedureParameter();
             param.key = "pSelectedNumbers";
+            ticket.choosedNumbers.Sort();
             param.value = string.Join(" ", ticket.choosedNumbers);
             parameters.Add(param);
 
