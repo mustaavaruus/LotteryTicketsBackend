@@ -13,9 +13,15 @@ namespace LotteryTicketsV1.DataAccess
     {
         private MySqlConnection connection;
 
+
         public DBStore()
         {
             this.connection = new MySqlConnection("datasource=127.0.0.1;Initial Catalog=lotteryticketsrybakovv2;port=3306;username=root;password=1234;SSL Mode=none");
+        }
+
+        public DBStore(string connectionString)
+        {
+            this.connection = new MySqlConnection(connectionString);
         }
 
         public void connect()

@@ -1,6 +1,7 @@
 ﻿using LotteryTicketsV1.BLL;
 using LotteryTicketsV1.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,13 +14,14 @@ namespace LotteryTicketsV1.Controllers
     [Route("api/[controller]")]
     public class TicketController : ControllerBase
     {
-
+        IConfiguration config;
         private TicketProcessing ticketProcessing;
 
-        public  TicketController() 
+        public  TicketController(IConfiguration config) 
         {
-            this.ticketProcessing = new TicketProcessing();
-
+            this.config = config;
+            this.ticketProcessing = new TicketProcessing(config);
+            
         }
 
         [HttpPut("add/")]
@@ -57,7 +59,7 @@ namespace LotteryTicketsV1.Controllers
         [HttpGet("get/")]
         public IActionResult get()
         {
-            Debug.WriteLine("_____________________________");
+
             try
             {
 

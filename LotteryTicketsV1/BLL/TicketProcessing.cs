@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Mapster;
 using LotteryTicketsV1.DataAccess;
 using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 
 namespace LotteryTicketsV1.BLL
 {
@@ -22,9 +23,10 @@ namespace LotteryTicketsV1.BLL
 
         private DBStore store;
 
-        public TicketProcessing()
+
+        public TicketProcessing(IConfiguration config)
         {
-            this.store = new DBStore();
+            this.store = new DBStore(config["ConnectionString"]);
         }
 
 
@@ -134,8 +136,6 @@ namespace LotteryTicketsV1.BLL
             stringBuilder.Append(ticket.choosedNumbersCount);
 
             stringBuilder.Append(")");
-
-            Debug.WriteLine(stringBuilder.ToString());
 
             return stringBuilder.ToString();
         }
@@ -356,7 +356,7 @@ namespace LotteryTicketsV1.BLL
                 ticket.choosedNumbers = new List<int>();
                 for (var i = 0; i < selectedNumbers.Length; i++)
                 {
-                    Debug.WriteLine("&&&" + selectedNumbers[i]);
+
 
                     var num = selectedNumbers[i];
                     if ((num != null))
